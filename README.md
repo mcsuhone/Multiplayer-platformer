@@ -20,6 +20,7 @@
 
 ## Install dependencies
 
+    pip install pyglet
 
 ## Running the program
 
