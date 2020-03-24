@@ -1,10 +1,12 @@
 import pyglet
-import player
 from pyglet.window import key
+
+import player
+
 
 window = pyglet.window.Window(800, 600)
 
-texture = pyglet.image.load("derbiili.png")
+texture = pyglet.image.load("./textures/derbiili.png")
 player = player.Player(texture, 0, 0)
 
 event_loop = pyglet.app.EventLoop()

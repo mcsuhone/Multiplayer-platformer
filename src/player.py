@@ -1,6 +1,5 @@
-from pyglet.window import key
 import pyglet
-
+from pyglet.window import key
 
 
 class Player(pyglet.sprite.Sprite):
