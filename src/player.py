@@ -36,11 +36,11 @@ class Player(pyglet.sprite.Sprite):
         dx = 0
         dy = 0
         if self.keys['up']:
-            dy += 1
+            dy += 2
         if self.keys['down']:
-            dy -= 1
+            dy -= 2
         if self.keys['left']:
-            dx -= 1
+            dx -= 2
         if self.keys['right']:
-            dx += 1
+            dx += 2
         self.move(dx, dy)
