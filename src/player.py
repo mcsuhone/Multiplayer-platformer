@@ -12,23 +12,23 @@ class Player(pyglet.sprite.Sprite):
         self.y += dy
 
     def on_key_press(self, symbol, modifiers):
-        if symbol == key.UP:
+        if symbol == key.W:
             self.keys['up'] = True
-        elif symbol == key.DOWN:
+        elif symbol == key.S:
             self.keys['down'] = True
-        elif symbol == key.LEFT:
+        elif symbol == key.A:
             self.keys['left'] = True
-        elif symbol == key.RIGHT:
+        elif symbol == key.D:
             self.keys['right'] = True
 
     def on_key_release(self, symbol, modifiers):
-        if symbol == key.UP:
+        if symbol == key.W:
             self.keys['up'] = False
-        elif symbol == key.DOWN:
+        elif symbol == key.S:
             self.keys['down'] = False
-        elif symbol == key.LEFT:
+        elif symbol == key.A:
             self.keys['left'] = False
-        elif symbol == key.RIGHT:
+        elif symbol == key.D:
             self.keys['right'] = False
 
     def update(self, dt):
