@@ -3,13 +3,13 @@ from pyglet.window import key
 import socket
 from _thread import *
 
-import player
+from player import Player
 
 
 window = pyglet.window.Window(800, 600)
 
 texture = pyglet.image.load("./textures/derbiili.png")
-player = player.Player(texture, 0, 0)
+player = Player(texture, 0, 0)
 
 event_loop = pyglet.app.EventLoop()
 
