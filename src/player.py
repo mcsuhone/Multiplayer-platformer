@@ -7,9 +7,13 @@ class Player(pyglet.sprite.Sprite):
         super().__init__(texture, x, y)
         self.keys = dict(left = False, right = False, up = False, down = False)
 
-    def move(self, dx, dy):
+    def move_by(self, dx, dy):
         self.x += dx
         self.y += dy
+
+    def move_to(self, x, y):
+        self.x = x
+        self.y = y
 
     def on_key_press(self, symbol, modifiers):
         if symbol == key.W:
@@ -42,4 +46,4 @@ class Player(pyglet.sprite.Sprite):
             dx -= 2
         if self.keys['right']:
             dx += 2
-        self.move(dx, dy)
+        self.move_by(dx, dy)
