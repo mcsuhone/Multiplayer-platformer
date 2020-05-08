@@ -23,6 +23,8 @@ current_id = 0
 positions = []
 
 def convert_to_data():
+    """"""
+
     data = ''
     for p in positions:
         data += p
@@ -31,11 +33,13 @@ def convert_to_data():
     return data
 
 def threaded_client(conn):
+    """"""
+
     global positions, current_id
     conn.send(str.encode(str(current_id)))
     positions.append(str(current_id) + "=0:0")
     current_id += 1
-    
+
     while True:
         try:
             data = conn.recv(2048).decode()

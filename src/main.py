@@ -36,11 +36,15 @@ def on_draw():
     player3.draw()
 
 def send_data():
+    """"""
+
     data = network.id + '=' + str(players[int(network.id)].x) + ':' + str(players[int(network.id)].y)
     reply = network.send(data)
     return reply
 
 def parse_data(data):
+    """"""
+
     try:
         arr = data.split('/')
         for p_info in arr:
