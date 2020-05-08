@@ -10,9 +10,10 @@ network = Network()
 
 texture = pyglet.image.load("./textures/derbiili.png")
 texture2 = pyglet.image.load("./textures/bug.png")
+texture3 = pyglet.image.load("./textures/snake.png")
 players = {}
 
-player = Player(texture2, 0, 0)
+player = Player(texture3, 0, 0)
 player2 = Player(texture2, 100, 100)
 player3 = Player(texture, 200, 100)
 
@@ -58,7 +59,7 @@ def parse_data(data):
         pass
 
 window.push_handlers(players[int(network.id)])
-pyglet.clock.schedule_interval(player.update, 1/60.0)
+pyglet.clock.schedule_interval(players[int(network.id)].update, 1/60.0)
 pyglet.app.run()
 
 
