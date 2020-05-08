@@ -54,7 +54,7 @@ def parse_data(data):
             coords = pair[1].split(':')
             if int(network.id) != id:
                 p = players[id]
-                p.move_to(int(coords[0]), int(coords[1]))
+                p.move_to(float(coords[0]), float(coords[1]))
     except:
         pass
 

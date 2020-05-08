@@ -3,8 +3,6 @@ from pyglet.window import key
 
 
 class Player(pyglet.sprite.Sprite):
-    """"""
-
     def __init__(self, texture, x, y, parent=None):
         super().__init__(texture, x, y)
         self.keys = dict(left = False, right = False, up = False, down = False)
@@ -48,5 +46,5 @@ class Player(pyglet.sprite.Sprite):
             dx -= 100*dt
         if self.keys['right']:
             dx += 100*dt
-
+        
         self.move_by(dx, dy)
