@@ -18,35 +18,44 @@ except socket.error as e:
 s.listen(2)
 print("Waiting for a connection")
 
-currentId = "0"
+current_id = 0
 
-pos = ["0:0,0", "1:0,0"]
+positions = []
+
+def convert_to_data():
+    data = ''
+    for p in positions:
+        data += p
+        data += '/'
+    data = data[:-1]
+    return data
 
 def threaded_client(conn):
-    global currentId, pos
-    conn.send(str.encode(currentId))
-    currentId = "1"
-    reply = ''
+    global positions, current_id
+    conn.send(str.encode(str(current_id)))
+    positions.append(str(current_id) + "=0:0")
+    thread_id = current_id
+    current_id += 1
+    
     while True:
         try:
-            data = conn.recv(2048)
-            reply = data.decode('utf-8')
+            data = conn.recv(2048).decode()
             if not data:
                 conn.send(str.encode("Goodbye"))
                 break
             else:
-                print("Recieved: " + reply)
-                arr = reply.split(":")
-                id = int(arr[0])
-                pos[id] = reply
+                #print("Recieved: " + data)
+                data_pair = data.split('=')
+                data_id = int(data_pair[0])
+                for i in range(len(positions)):
+                    pair = positions[i].split('=')
+                    id = int(pair[0])
+                    if id == data_id:
+                        coords = data_pair[1].split(':')
+                        new_pos = str(data_id) + "=" + coords[0] + ":" + coords[1]
+                        positions[i] = new_pos
 
-                if id == 0: nid = 1
-                if id == 1: nid = 0
-
-                reply = pos[nid][:]
-                print("Sending: " + reply)
-
-            conn.sendall(str.encode(reply))
+            conn.sendall(str.encode(convert_to_data()))
         except:
             break
 
@@ -54,7 +63,6 @@ def threaded_client(conn):
     conn.close()
 
 while True:
-    print("lolol")
     conn, addr = s.accept()
     print("Connected to: ", addr)
 

@@ -46,4 +46,5 @@ class Player(pyglet.sprite.Sprite):
             dx -= 2
         if self.keys['right']:
             dx += 2
+        
         self.move_by(dx, dy)
