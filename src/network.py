@@ -17,10 +17,6 @@ class Network:
         return self.client.recv(2048).decode()
 
     def send(self, data):
-        """
-        :param data: str
-        :return: str
-        """
         try:
             self.client.send(str.encode(data))
             reply = self.client.recv(2048).decode()

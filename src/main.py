@@ -12,7 +12,7 @@ texture = pyglet.image.load("./textures/derbiili.png")
 texture2 = pyglet.image.load("./textures/bug.png")
 players = {}
 
-player = Player(texture, 0, 0)
+player = Player(texture2, 0, 0)
 player2 = Player(texture2, 100, 100)
 player3 = Player(texture, 200, 100)
 
@@ -36,11 +36,6 @@ def on_draw():
     player3.draw()
 
 def send_data():
-    """
-    Send position to server
-    :return: None
-    """
-
     data = network.id + '=' + str(players[int(network.id)].x) + ':' + str(players[int(network.id)].y)
     reply = network.send(data)
     return reply
