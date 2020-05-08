@@ -41,7 +41,7 @@ def send_data():
     :return: None
     """
 
-    data = network.id + "=" + str(players[int(network.id)].x) + ":" + str(players[int(network.id)].y)
+    data = network.id + '=' + str(players[int(network.id)].x) + ':' + str(players[int(network.id)].y)
     reply = network.send(data)
     return reply
 
@@ -59,7 +59,7 @@ def parse_data(data):
         pass
 
 window.push_handlers(players[int(network.id)])
-pyglet.clock.schedule_interval(player.update, 1/120.0)
+pyglet.clock.schedule_interval(player.update, 1/60.0)
 pyglet.app.run()
 
 

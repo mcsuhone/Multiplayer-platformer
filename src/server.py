@@ -4,7 +4,7 @@ import sys
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-server = "25.114.43.86"
+server = "87.100.137.16"
 port = 5555
 
 server_ip = socket.gethostbyname(server)
@@ -15,7 +15,7 @@ try:
 except socket.error as e:
     print(str(e))
 
-s.listen(2)
+s.listen(4)
 print("Waiting for a connection")
 
 current_id = 0
@@ -34,7 +34,6 @@ def threaded_client(conn):
     global positions, current_id
     conn.send(str.encode(str(current_id)))
     positions.append(str(current_id) + "=0:0")
-    thread_id = current_id
     current_id += 1
     
     while True:
