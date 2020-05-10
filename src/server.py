@@ -4,7 +4,7 @@ import sys
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-server = "87.100.137.16"
+server = "192.168.10.61"
 port = 5555
 
 server_ip = socket.gethostbyname(server)
@@ -37,7 +37,7 @@ def threaded_client(conn):
 
     global positions, current_id
     conn.send(str.encode(str(current_id)))
-    positions.append(str(current_id) + "=0:0")
+    positions.append(str(current_id) + "=0:0=0")
     current_id += 1
 
     while True:
@@ -55,8 +55,8 @@ def threaded_client(conn):
                     id = int(pair[0])
                     if id == data_id:
                         coords = data_pair[1].split(':')
-                        new_pos = str(data_id) + "=" + coords[0] + ":" + coords[1]
-                        positions[i] = new_pos
+                        new_info = str(data_id) + '=' + coords[0] + ':' + coords[1] + '=' + data_pair[2]
+                        positions[i] = new_info
 
             conn.sendall(str.encode(convert_to_data()))
         except:
