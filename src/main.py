@@ -13,9 +13,9 @@ texture2 = pyglet.image.load("./textures/bug.png")
 texture3 = pyglet.image.load("./textures/snake.png")
 players = {}
 
-player = Player(texture3, 0, 0)
+player = Player(texture, 0, 0)
 player2 = Player(texture2, 100, 100)
-player3 = Player(texture, 200, 100)
+player3 = Player(texture3, 200, 100)
 
 players[0] = player
 players[1] = player2
@@ -29,12 +29,13 @@ def on_window_close(window):
 
 @window.event
 def on_draw():
-    parse_data(send_data())
-
     window.clear()
     player.draw()
     player2.draw()
     player3.draw()
+
+def update(dt):
+    parse_data(send_data())
 
 def send_data():
     """"""
@@ -60,6 +61,7 @@ def parse_data(data):
 
 window.push_handlers(players[int(network.id)])
 pyglet.clock.schedule_interval(players[int(network.id)].update, 1/60.0)
+pyglet.clock.schedule_interval(update, 1/60)
 pyglet.app.run()
 
 
