@@ -1,0 +1,4 @@
+#TODO LIST:
+
+- Optimize for -loops
+- Optimize drawing

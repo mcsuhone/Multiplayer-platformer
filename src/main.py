@@ -54,6 +54,8 @@ def on_draw():
     for i in players:
         players[i].draw()
 
+
+
 def send_data():
     """"""
 
@@ -86,7 +88,7 @@ def parse_data(data):
 
 init()
 window.push_handlers(players[int(network.id)])
-pyglet.clock.schedule_interval(players[int(network.id)].update, 1/60.0)
+pyglet.clock.schedule_interval(players[int(network.id)].update, 1/120.0)
 pyglet.app.run()
 
 
