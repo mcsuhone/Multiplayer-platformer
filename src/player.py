@@ -1,11 +1,15 @@
 import pyglet
 from pyglet.window import key
+from vector import Vector
+from projectile import Projectile
+
 
 
 class Player(pyglet.sprite.Sprite):
     def __init__(self, texture, x, y, parent=None):
         super().__init__(texture, x, y)
         self.keys = dict(left = False, right = False, up = False, down = False)
+        self.projectiles = []
 
     def move_by(self, dx, dy):
         self.x += dx
@@ -34,6 +38,16 @@ class Player(pyglet.sprite.Sprite):
             self.keys['left'] = False
         elif symbol == key.D:
             self.keys['right'] = False
+
+    def center_coordinates(self):
+        return self.x + 15, self.y +15
+
+    def on_mouse_press(self, x, y, button, modifiers):
+        direction = Vector(x - self.x, y - self.y)
+        if button == pyglet.window.mouse.LEFT:
+            x, y = self.center_coordinates()
+            self.projectiles.append(Projectile(x, y, direction))
+        
 
     def update(self, dt):
         dx = 0
