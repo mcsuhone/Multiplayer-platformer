@@ -2,101 +2,105 @@ import socket
 from _thread import *
 import sys
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+class Server:
+    def __init__(self, ip, port):
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        server = ip
+        port = port
+        self.server_ip = socket.gethostbyname(server)
+        try:
+            self.socket.bind((server, port))
 
-server = "87.100.186.20"
-port = 5555
+        except socket.error as e:
+            print(str(e))
 
-server_ip = socket.gethostbyname(server)
+        self.positions = {}
+        self.projectiles = {}
+        self.current_id = 0
 
-try:
-    s.bind((server, port))
+    def add_player(self):
+        """Add player to Server and give it id. Returns the id."""
+        self.positions[self.current_id] = str(server.current_id) + ":0:0:0"
+        self.current_id += 1
 
-except socket.error as e:
-    print(str(e))
+        return self.current_id - 1
 
-s.listen(4)
-print("Waiting for a connection")
+    def parse_data(self, data, player_id):
+        pair = data.split('=')
+        data_id = int(pair[0])
+        
+        if data_id == 0:
+            self.parse_player_data(pair[1], player_id)
 
-current_id = 0
+        elif data_id == 1:
+            self.parse_projectile_data(pair[1], player_id)
 
-positions = []
-projectiles = {}
+    def parse_player_data(self, data, player_id):
+        self.positions[player_id] = data
 
-def convert_to_data(player_id):
-    """"""
+    def parse_projectile_data(self, data, player_id):
+        for i in range(len(self.positions)):
+            self.projectiles[i] = data
 
-    data = ''
-    for p in positions:
-        data += p
-        data += '/'
-    data = data[:-1]
-    
-    try:
-        if len(projectiles[player_id]) > 0:
-            data += '!'
-            while len(projectiles[player_id]) > 0:
-                proj = projectiles[player_id].pop(0)
-                data += proj + '/'
+
+    def convert_player_data(self):
+        """Converts player information stored in server class to data string."""
+        data = '0='
+        for id in self.positions:
+            data += self.positions[id]
+            data += '/'
         data = data[:-1]
-    except:
-        pass
+        data += '!'
 
-    return data
+        return data
+
+    def convert_projectile_data(self, player_id):
+        """Converts projectile information stored in server class to data string."""
+        data = '1='
+        if player_id in self.projectiles and self.projectiles[player_id] != None:
+            data += self.projectiles[player_id]
+            data += '!'
+            self.projectiles[player_id] = None
+
+            return data
+        else:
+            return None
 
 def threaded_client(conn):
     """"""
-    global positions, current_id
-    conn.send(str.encode(str(current_id)))
-    positions.append(str(current_id) + "=0:0=0")
-    current_id += 1
-
+    global server
+    conn.send(str.encode(str(server.current_id)))
+    player_id = server.add_player()
+    
     while True:
         try:
             data = conn.recv(2048).decode()
             if not data:
                 break
             else:
-                #print("Recieved: " + data)
-                pair = data.split('!')
-                player_data = pair[0]
-                projectile_error = False
-                
-                try:
-                    projectile_data = pair[1]
-                    projectile_error = False
-                except:
-                    projectile_error = True
-                
-                player_pair = player_data.split('=')
-                player_id = int(player_pair[0])
-                for i in range(len(positions)):
-                    pair = positions[i].split('=')
-                    id = int(pair[0])
-                    if id == player_id:
-                        coords = player_pair[1].split(':')
-                        new_info = str(player_id) + '=' + coords[0] + ':' + coords[1] + '=' + player_pair[2]
-                        positions[i] = new_info
+                server.parse_data(data, player_id)
 
-                if projectile_error == False:
-                    projs = projectile_data.split('/')
-                    for i in range(len(positions)):
-                        if i != player_id:
-                            lst = []
-                            for p in projs:
-                                lst.append(p)
-                            projectiles[i] = lst
+                player_data = server.convert_player_data()
+                projectile_data = server.convert_projectile_data(player_id)
+                
 
-                conn.sendall(str.encode(convert_to_data(player_id)))
-        except e:
-            print(e)
+                #print("Data: ", player_data, " and ", projectile_data)
+                conn.sendall(str.encode(player_data))
+                if projectile_data != None:
+                    conn.sendall(str.encode(projectile_data))
+        except:
             break
 
     print("Connection Closed")
     conn.close()
 
+server = Server("192.168.10.61", 5555)
+
+server.socket.listen(4)
+print("Waiting for a connections")
+
 while True:
-    conn, addr = s.accept()
+    conn, addr = server.socket.accept()
     print("Connected to: ", addr)
 
     start_new_thread(threaded_client, (conn,))
