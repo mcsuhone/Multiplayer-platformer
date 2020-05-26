@@ -2,6 +2,7 @@ import pyglet
 from pyglet.window import key
 from vector import Vector
 from projectile import Projectile
+from hitbox import Hitbox
 
 texture = pyglet.image.load("./textures/derbiili.png")
 texture2 = pyglet.image.load("./textures/bug.png")
@@ -14,6 +15,8 @@ textures[2] = texture3
 class Player(pyglet.sprite.Sprite):
     def __init__(self, texture_id, x, y, owner_id, parent=None):
         super().__init__(textures[texture_id], x, y)
+        self.hitbox = Hitbox(x, y, 32, 20)
+
         self.keys = dict(left = False, right = False, up = False, down = False, shoot = False)
         self.owner = owner_id
         self.texture_id = texture_id

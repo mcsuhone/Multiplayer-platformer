@@ -1,0 +1,30 @@
+Date : 2020-05-25 15:43:19
+Directory : c:\Users\Mikko\Documents\Moninpeli-peli\Multiplayer-platformer\src
+Total : 6 files,  268 codes, 12 comments, 78 blanks, all 358 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| Python   |          6 |        268 |         12 |         78 |        358 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                             | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                |          6 |        268 |         12 |         78 |        358 |
++----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++----------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                         | language | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| c:\Users\Mikko\Documents\Moninpeli-peli\Multiplayer-platformer\src\main.py       | Python   |         69 |          3 |         19 |         91 |
+| c:\Users\Mikko\Documents\Moninpeli-peli\Multiplayer-platformer\src\network.py    | Python   |         34 |          4 |         12 |         50 |
+| c:\Users\Mikko\Documents\Moninpeli-peli\Multiplayer-platformer\src\player.py     | Python   |         61 |          0 |         11 |         72 |
+| c:\Users\Mikko\Documents\Moninpeli-peli\Multiplayer-platformer\src\projectile.py | Python   |          8 |          0 |          3 |         11 |
+| c:\Users\Mikko\Documents\Moninpeli-peli\Multiplayer-platformer\src\server.py     | Python   |         76 |          5 |         25 |        106 |
+| c:\Users\Mikko\Documents\Moninpeli-peli\Multiplayer-platformer\src\vector.py     | Python   |         20 |          0 |          8 |         28 |
+| Total                                                                            |          |        268 |         12 |         78 |        358 |
++----------------------------------------------------------------------------------+----------+------------+------------+------------+------------+

@@ -71,7 +71,7 @@ def threaded_client(conn):
     global server
     conn.send(str.encode(str(server.current_id)))
     player_id = server.add_player()
-    
+
     while True:
         try:
             data = conn.recv(2048).decode()
@@ -82,7 +82,6 @@ def threaded_client(conn):
 
                 player_data = server.convert_player_data()
                 projectile_data = server.convert_projectile_data(player_id)
-                
 
                 #print("Data: ", player_data, " and ", projectile_data)
                 conn.sendall(str.encode(player_data))
