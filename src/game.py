@@ -1,9 +1,10 @@
 import pyglet
 from pyglet.window import key
+import numpy
 
 from player import Player
-from projectile import Projectile
-from blocks.block import Block
+from objects.projectiles.projectile import Projectile
+from objects.blocks.block import Block
 
 from network import Network
 from vector import Vector
@@ -25,18 +26,19 @@ class Game:
         new_player = Player(texture_id, 100, 100, self.network.id)
         self.players[self.network.id] = new_player
 
+        self.fps_display = pyglet.window.FPSDisplay(window = self.window)
         self.window.push_handlers(self.players[self.network.id])
         self.window.push_handlers(self)
-        pyglet.clock.schedule_interval(self.players[self.network.id].update, 1/60.0)
+        pyglet.clock.schedule_interval(self.players[self.network.id].update, 1/60)
         pyglet.clock.schedule_interval(self.update, 1/60)
         pyglet.app.run()
 
     def load_map(self):
         for i in range(100):
-            block = Block(i*16, 16, 1)
+            block = Block(11, i*16, 16)
             self.blocks.append(block)
         for i in range(100):
-            block = Block(i*16, 0, 2)
+            block = Block(12, i*16, 0)
             self.blocks.append(block)
 
     def on_draw(self):
@@ -51,7 +53,10 @@ class Game:
         for b in self.blocks:
             b.draw()
 
+        self.fps_display.draw()
+
     def update(self, dt):
+        #print("FPS: ", 1/dt)
         self.network.send_player_data(self.players[self.network.id])
         self.network.send_projectile_data(self.players[self.network.id])
         self.players[self.network.id].projectiles = []

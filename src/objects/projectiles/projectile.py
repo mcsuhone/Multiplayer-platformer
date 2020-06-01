@@ -1,11 +1,15 @@
+import sys 
+sys.path.append('..')
+
 from vector import Vector
+from src.objects.object import Object
 import pyglet
 
 
-class Projectile(pyglet.sprite.Sprite):
+class Projectile(Object):
     def __init__(self, x, y, direction, owner_id = None):
-        texture = pyglet.image.load("./textures/bullet.png")
-        super().__init__(texture, x, y)
+        texture_id = 20
+        super().__init__(texture_id, x, y)
         self.direction = direction
         self.owner = owner_id
         

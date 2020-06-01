@@ -1,6 +1,9 @@
+import sys
+
 import socket
 from _thread import *
-import sys
+
+
 
 class Server:
     def __init__(self, ip, port):
@@ -15,6 +18,7 @@ class Server:
             print(str(e))
 
         self.positions = {}
+        self.positions_count = 0
         self.projectiles = {}
         self.current_id = 0
 
@@ -22,6 +26,7 @@ class Server:
         """Add player to Server and give it id. Returns the id."""
         self.positions[self.current_id] = str(server.current_id) + ":0:0:0"
         self.current_id += 1
+        self.positions_count += 1
 
         return self.current_id - 1
 
@@ -39,7 +44,7 @@ class Server:
         self.positions[player_id] = data
 
     def parse_projectile_data(self, data, player_id):
-        for i in range(len(self.positions)):
+        for i in self.positions:
             self.projectiles[i] = data
 
 
@@ -93,7 +98,7 @@ def threaded_client(conn):
     print("Connection Closed")
     conn.close()
 
-server = Server("192.168.10.61", 5555)
+server = Server("87.92.3.243", 5555)
 
 server.socket.listen(4)
 print("Waiting for a connections")

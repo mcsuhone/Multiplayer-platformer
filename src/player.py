@@ -1,25 +1,16 @@
 import pyglet
 from pyglet.window import key
 from vector import Vector
-from projectile import Projectile
-from hitbox import Hitbox
+from objects.projectiles.projectile import Projectile
+from objects.object import Object
 
-texture = pyglet.image.load("./textures/derbiili.png")
-texture2 = pyglet.image.load("./textures/bug.png")
-texture3 = pyglet.image.load("./textures/snake.png")
-textures = {}
-textures[0] = texture
-textures[1] = texture2
-textures[2] = texture3
-
-class Player(pyglet.sprite.Sprite):
-    def __init__(self, texture_id, x, y, owner_id, parent=None):
-        super().__init__(textures[texture_id], x, y)
-        self.hitbox = Hitbox(x, y, 32, 20)
-
+class Player(Object):
+    def __init__(self, character_id, x, y, owner_id, parent=None):
+        super().__init__(character_id, x, y)
+        
         self.keys = dict(left = False, right = False, up = False, down = False, shoot = False)
         self.owner = owner_id
-        self.texture_id = texture_id
+        self.texture_id = character_id
         self.projectiles = []
 
     def move_by(self, dx, dy):
