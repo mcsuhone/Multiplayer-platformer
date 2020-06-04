@@ -18,8 +18,10 @@ class Game:
         self.network = Network()
         self.players = {}
         self.projectiles = []
+        self.projectiles_batch = pyglet.graphics.Batch()
         self.blocks = []
-
+        self.blocks_batch = pyglet.graphics.Batch()
+        
         self.load_map()
 
         texture_id = 0
@@ -35,10 +37,12 @@ class Game:
 
     def load_map(self):
         for i in range(100):
-            block = Block(11, i*16, 16)
+            block = Block(11, i*16, 16, self.blocks_batch)
             self.blocks.append(block)
+            
+
         for i in range(100):
-            block = Block(12, i*16, 0)
+            block = Block(12, i*16, 0, self.blocks_batch)
             self.blocks.append(block)
 
     def on_draw(self):
@@ -47,11 +51,8 @@ class Game:
         for i in self.players:
             self.players[i].draw()
         #Draw projectiles
-        for p in self.projectiles:
-            p.draw()
-        #Draw blocks
-        for b in self.blocks:
-            b.draw()
+        self.blocks_batch.draw()
+        self.projectiles_batch.draw()
 
         self.fps_display.draw()
 
@@ -87,7 +88,7 @@ class Game:
                 for proj_data in arr:
                     info = proj_data.split(':')
                     direction = Vector(float(info[3]), float(info[4]))
-                    projectile = Projectile(float(info[1]), float(info[2]), direction, int(info[0]))
+                    projectile = Projectile(float(info[1]), float(info[2]), direction, int(info[0]), self.projectiles_batch)
                     self.projectiles.append(projectile)
                     
         except:

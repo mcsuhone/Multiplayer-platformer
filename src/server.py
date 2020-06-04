@@ -3,8 +3,6 @@ import sys
 import socket
 from _thread import *
 
-
-
 class Server:
     def __init__(self, ip, port):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -98,7 +96,7 @@ def threaded_client(conn):
     print("Connection Closed")
     conn.close()
 
-server = Server("87.92.3.243", 5555)
+server = Server("87.92.50.251", 5555)
 
 server.socket.listen(4)
 print("Waiting for a connections")

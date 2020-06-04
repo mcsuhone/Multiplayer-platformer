@@ -27,8 +27,8 @@ textures[12] = texture6
 textures[20] = texture7
 
 class Object(pyglet.sprite.Sprite):
-    def __init__(self, texture_id, x, y, collidable = True):
+    def __init__(self, texture_id, x, y, batch = None, collidable = True):
         texture = textures[texture_id]
-        super().__init__(texture, x, y)
+        super().__init__(texture, x, y, batch = batch)
         self.hitbox = Hitbox(x, y, texture.width, texture.height)
         self.collidable = True
