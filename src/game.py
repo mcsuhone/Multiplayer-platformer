@@ -1,6 +1,5 @@
 import pyglet
 from pyglet.window import key
-import numpy
 
 from player import Player
 from objects.projectiles.projectile import Projectile
@@ -21,7 +20,6 @@ class Game:
         self.projectiles_batch = pyglet.graphics.Batch()
         self.blocks = []
         self.blocks_batch = pyglet.graphics.Batch()
-        
         self.load_map()
 
         texture_id = 0
@@ -29,9 +27,10 @@ class Game:
         self.players[self.network.id] = new_player
 
         self.fps_display = pyglet.window.FPSDisplay(window = self.window)
+
         self.window.push_handlers(self.players[self.network.id])
         self.window.push_handlers(self)
-        pyglet.clock.schedule_interval(self.players[self.network.id].update, 1/60)
+        pyglet.clock.schedule_interval(self.players[self.network.id].input, 1/60)
         pyglet.clock.schedule_interval(self.update, 1/60)
         pyglet.app.run()
 
@@ -39,7 +38,6 @@ class Game:
         for i in range(100):
             block = Block(11, i*16, 16, self.blocks_batch)
             self.blocks.append(block)
-            
 
         for i in range(100):
             block = Block(12, i*16, 0, self.blocks_batch)
@@ -57,7 +55,6 @@ class Game:
         self.fps_display.draw()
 
     def update(self, dt):
-        #print("FPS: ", 1/dt)
         self.network.send_player_data(self.players[self.network.id])
         self.network.send_projectile_data(self.players[self.network.id])
         self.players[self.network.id].projectiles = []
@@ -67,6 +64,10 @@ class Game:
         for data in list_of_data:
             if data != '':
                 self.parse_data(data)
+
+        self.players[self.network.id].check_collisions(self.blocks)
+        self.players[self.network.id].move()
+        
 
     def parse_data(self, data):
         """"""

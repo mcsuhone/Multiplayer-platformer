@@ -13,14 +13,6 @@ class Player(Object):
         self.texture_id = character_id
         self.projectiles = []
 
-    def move_by(self, dx, dy):
-        self.x += dx
-        self.y += dy
-
-    def move_to(self, x, y):
-        self.x = x
-        self.y = y
-
     def on_key_press(self, symbol, modifiers):
         if symbol == key.W:
             self.keys['up'] = True
@@ -50,7 +42,7 @@ class Player(Object):
             x, y = self.center_coordinates()
             self.projectiles.append(Projectile(x, y, direction, self.owner))
 
-    def update(self, dt):
+    def input(self, dt):
         dx = 0
         dy = 0
         if self.keys['up']:
@@ -62,4 +54,5 @@ class Player(Object):
         if self.keys['right']:
             dx += 100*dt
         
-        self.move_by(dx, dy)
+        self.velocity.x = dx
+        self.velocity.y = dy
