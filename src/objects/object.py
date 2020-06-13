@@ -46,18 +46,19 @@ class Object(pyglet.sprite.Sprite):
         self.y = y
 
     def check_collisions(self, objects):
+        future_hitbox = Hitbox(self.x + self.velocity.x, self.y + self.velocity.y, self.hitbox.width, self.hitbox.height)
         for obj in objects:
-            future_hitbox = Hitbox(self.x + self.velocity.x, self.y + self.velocity.y, self.hitbox.width, self.hitbox.height)
-            collision_directions = future_hitbox.intersects(obj.hitbox)
-            if collision_directions['left']:
-                self.velocity.x = 0
-                self.velocity.y = 0
-            if collision_directions['right']:
-                self.velocity.x = 0
-                self.velocity.y = 0
-            if collision_directions['top']:
-                self.velocity.x = 0
-                self.velocity.y = 0
-            if collision_directions['bottom']:
-                self.velocity.x = 0
-                self.velocity.y = 0
+            future_hitbox.intersects(obj.hitbox)
+
+        if future_hitbox.collision_directions['left']:
+            self.velocity.x = 0
+            self.velocity.y = 0
+        if future_hitbox.collision_directions['right']:
+            self.velocity.x = 0
+            self.velocity.y = 0
+        if future_hitbox.collision_directions['top']:
+            self.velocity.x = 0
+            self.velocity.y = 0
+        if future_hitbox.collision_directions['bottom']:
+            self.velocity.x = 0
+            self.velocity.y = 0

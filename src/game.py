@@ -65,7 +65,7 @@ class Game:
             if data != '':
                 self.parse_data(data)
 
-        self.players[self.network.id].check_collisions(self.blocks)
+        self.players[self.network.id].check_collisions(self.blocks + self.projectiles)
         self.players[self.network.id].move()
         
 
