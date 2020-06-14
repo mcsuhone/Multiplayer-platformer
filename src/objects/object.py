@@ -2,7 +2,8 @@ import sys
 sys.path.append('..')
 
 import pyglet
-from src.objects.hitbox import Hitbox
+from hitbox import Hitbox
+from src.vector import Vector
 
 #Player sprites
 texture = pyglet.image.load("./textures/derbiili.png")
@@ -32,3 +33,31 @@ class Object(pyglet.sprite.Sprite):
         super().__init__(texture, x, y, batch = batch)
         self.hitbox = Hitbox(x, y, texture.width, texture.height)
         self.collidable = True
+        self.velocity = Vector(0,0)
+
+    def move(self):
+        self.x += self.velocity.x
+        self.y += self.velocity.y
+        self.hitbox.x = self.x
+        self.hitbox.y = self.y
+
+    def move_to(self, x, y):
+        self.x = x
+        self.y = y
+
+    def check_collisions(self, objects):
+        for obj in objects:
+            future_hitbox = Hitbox(self.x + self.velocity.x, self.y + self.velocity.y, self.hitbox.width, self.hitbox.height)
+            collision_directions = future_hitbox.intersects(obj.hitbox)
+            if collision_directions['left']:
+                self.velocity.x = 0
+                self.velocity.y = 0
+            if collision_directions['right']:
+                self.velocity.x = 0
+                self.velocity.y = 0
+            if collision_directions['top']:
+                self.velocity.x = 0
+                self.velocity.y = 0
+            if collision_directions['bottom']:
+                self.velocity.x = 0
+                self.velocity.y = 0

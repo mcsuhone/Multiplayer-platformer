@@ -96,7 +96,7 @@ def threaded_client(conn):
     print("Connection Closed")
     conn.close()
 
-server = Server("78.27.103.28", 5555)
+server = Server("192.168.0.100", 5555)
 
 server.socket.listen(4)
 print("Waiting for a connections")
