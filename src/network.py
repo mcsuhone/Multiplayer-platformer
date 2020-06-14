@@ -6,7 +6,7 @@ class Network:
 
     def __init__(self):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.host = "87.92.50.251"
+        self.host = "78.27.103.28"
         # For this to work on your machine this must be equal to the ipv4 address of the machine running the server
         # You can find this address by typing ipconfig in CMD and copying the ipv4 address. Again this must be the servers
         # ipv4 address. This feild will be the same for all your clients.
@@ -33,7 +33,6 @@ class Network:
             data = '1='
             for proj in player.projectiles:
                 data += str(self.id) + ':' + str(proj.x) + ':' + str(proj.y) + ':' + str(proj.direction.x) + ':' + str(proj.direction.y) + '/'
-            data = data[:-1]
             self.send(data)
 
     def receive_data(self):
