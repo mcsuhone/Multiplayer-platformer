@@ -33,7 +33,6 @@ class Network:
             data = '1='
             for proj in player.projectiles:
                 data += str(self.id) + ':' + str(proj.x) + ':' + str(proj.y) + ':' + str(proj.direction.x) + ':' + str(proj.direction.y) + '/'
-            data = data[:-1]
             self.send(data)
 
     def receive_data(self):

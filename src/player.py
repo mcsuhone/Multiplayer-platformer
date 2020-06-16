@@ -5,7 +5,7 @@ from objects.projectiles.projectile import Projectile
 from objects.object import Object
 
 class Player(Object):
-    def __init__(self, character_id, x, y, owner_id, parent=None):
+    def __init__(self, character_id, x, y, owner_id, batch = None, parent=None):
         super().__init__(character_id, x, y)
         
         self.keys = dict(left = False, right = False, up = False, down = False, shoot = False)
@@ -40,7 +40,7 @@ class Player(Object):
         direction = Vector(x - self.x, y - self.y)
         if button == pyglet.window.mouse.LEFT:
             x, y = self.center_coordinates()
-            self.projectiles.append(Projectile(x, y, direction, self.owner))
+            self.projectiles.append(Projectile(x, y, direction, owner_id = self.owner))
 
     def input(self, dt):
         dx = 0

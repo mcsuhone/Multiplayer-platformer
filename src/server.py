@@ -52,7 +52,7 @@ class Server:
         for id in self.positions:
             data += self.positions[id]
             data += '/'
-        data = data[:-1]
+
         data += '!'
 
         return data
