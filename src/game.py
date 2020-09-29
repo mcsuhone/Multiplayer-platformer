@@ -44,11 +44,15 @@ class Game:
             block = Block(12, i*16, 0, self.blocks_batch)
             self.blocks.append(block)
 
+        block = Block(11, 128, 32, self.blocks_batch)
+        self.blocks.append(block)
+        block = Block(11, 1, 32, self.blocks_batch)
+        self.blocks.append(block)
+
     def on_draw(self):
         self.window.clear()
         #Draw players
-        for i in self.players:
-            self.players[i].draw()
+        self.players_batch.draw()
         #Draw projectiles
         self.blocks_batch.draw()
         self.projectiles_batch.draw()
@@ -66,8 +70,8 @@ class Game:
             self.parse_data(list_of_data[i])
             i += 1
 
-        self.players[self.network.id].check_collisions(self.blocks + self.projectiles)
-        self.players[self.network.id].move()
+        self.players[self.network.id].check_collisions(self.blocks)
+        self.players[self.network.id].update_movement(dt)
         
 
     def parse_data(self, data):

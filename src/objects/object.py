@@ -2,8 +2,9 @@ import sys
 sys.path.append('..')
 
 import pyglet
-from hitbox import Hitbox
+from src.objects.hitbox import Hitbox
 from src.vector import Vector
+from src.physics import Physics
 
 #Player sprites
 texture = pyglet.image.load("./textures/derbiili.png")
@@ -33,32 +34,43 @@ class Object(pyglet.sprite.Sprite):
         super().__init__(texture, x, y, batch = batch)
         self.hitbox = Hitbox(x, y, texture.width, texture.height)
         self.collidable = True
-        self.velocity = Vector(0,0)
+        self.physics = Physics()
 
-    def move(self):
-        self.x += self.velocity.x
-        self.y += self.velocity.y
+    def move(self, dt = 0.01):
+        self.x += self.physics.velocity.x * dt * 100
+        self.y += self.physics.velocity.y * dt * 100
         self.hitbox.x = self.x
         self.hitbox.y = self.y
 
     def move_to(self, x, y):
         self.x = x
         self.y = y
+        self.hitbox.x = self.x
+        self.hitbox.y = self.y
 
     def check_collisions(self, objects):
-        future_hitbox = Hitbox(self.x + self.velocity.x, self.y + self.velocity.y, self.hitbox.width, self.hitbox.height)
+        future_hitbox = Hitbox(self.x + self.physics.velocity.x, self.y + self.physics.velocity.y, self.hitbox.width, self.hitbox.height)
         for obj in objects:
             future_hitbox.intersects(obj.hitbox)
 
         if future_hitbox.collision_directions['left']:
-            self.velocity.x = 0
-            self.velocity.y = 0
+            print("left")
+            self.physics.stop()
         if future_hitbox.collision_directions['right']:
-            self.velocity.x = 0
-            self.velocity.y = 0
+            print("right")
+            self.physics.stop()
         if future_hitbox.collision_directions['top']:
-            self.velocity.x = 0
-            self.velocity.y = 0
+            print("top")
+            self.physics.stop()
         if future_hitbox.collision_directions['bottom']:
-            self.velocity.x = 0
-            self.velocity.y = 0
+            print("bottom")
+            self.physics.stop()
+            self.physics.in_air = False
+
+    def update_movement(self, dt):
+        self.move(dt)
+        self.physics.fall()
+        
+
+        
+

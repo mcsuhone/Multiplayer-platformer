@@ -10,19 +10,27 @@ class Vector:
     def length(self):
         return math.sqrt(math.pow(self.x,2)+math.pow(self.x,2))
 
-    def plus(self, vector):
-        self.x += vector.x
-        self.y += vector.y
+    def __add__(self, other):
+        return Vector(self.x + other.x, self.y + other.y)
 
-    def minus(self, vector):
-        self.x -= vector.x
-        self.y -= vector.y
+    def __sub__(self, other):
+        return Vector(self.x - other.x, self.y - other.y)
 
     def scale(self, amount):
         self.x *= amount
         self.y *= amount
 
+
     def make_unit(self):
         length = self.length()
         self.x = self.x / length
         self.y = self.y / length
+
+    def x_dir(self):
+        if self.x >= 0:
+            return 1
+        else:
+            return -1
+    
+    def __str__(self):
+        return "[" + str(self.x) + ", " + str(self.y) + "]"
