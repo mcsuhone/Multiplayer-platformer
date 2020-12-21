@@ -1,4 +1,7 @@
 #TODO LIST:
 
-- Optimize for -loops
-- Optimize drawing
+1. Make physics even better
+
+2.
+- Make chunks and camera movement
+- Make data_packet class for server

@@ -1,4 +1,5 @@
 import pyglet
+import random
 from pyglet.window import key
 
 from player import Player
@@ -14,7 +15,7 @@ event_loop = pyglet.app.EventLoop()
 class Game:
     def __init__(self, window):
         self.window = window
-        self.network = Network()
+        self.network = Network(self)
         self.players = {}
         self.players_batch = pyglet.graphics.Batch()
         self.projectiles = []
@@ -23,31 +24,32 @@ class Game:
         self.blocks_batch = pyglet.graphics.Batch()
         self.load_map()
 
-        texture_id = 0
-        new_player = Player(texture_id, 100, 100, self.network.id, self.players_batch)
+        texture_id = 2
+        new_player = Player(texture_id, 212, 170, self.network.id, self.players_batch)
         self.players[self.network.id] = new_player
 
         self.fps_display = pyglet.window.FPSDisplay(window = self.window)
 
         self.window.push_handlers(self.players[self.network.id])
         self.window.push_handlers(self)
-        pyglet.clock.schedule_interval(self.players[self.network.id].input, 1/60)
         pyglet.clock.schedule_interval(self.update, 1/60)
         pyglet.app.run()
 
+    def add_block(self, block):
+        self.blocks.append(block)
+
+    def add_projectile(self, projectile):
+        self.projectiles.append(projectile)
+
     def load_map(self):
-        for i in range(100):
-            block = Block(11, i*16, 16, self.blocks_batch)
-            self.blocks.append(block)
-
-        for i in range(100):
-            block = Block(12, i*16, 0, self.blocks_batch)
-            self.blocks.append(block)
-
-        block = Block(11, 128, 32, self.blocks_batch)
-        self.blocks.append(block)
-        block = Block(11, 1, 32, self.blocks_batch)
-        self.blocks.append(block)
+        for x in range(100):
+            for y in range(6):
+                self.add_block(Block(12, x*16, y*16, self.blocks_batch))
+        self.add_block(Block(12, 13*16, 9*16, self.blocks_batch))
+        self.add_block(Block(12, 7*16, 6*16, self.blocks_batch))
+        self.add_block(Block(12, 7*16, 7*16, self.blocks_batch))
+        self.add_block(Block(12, 7*16, 8*16, self.blocks_batch))
+        self.add_block(Block(12, 7*16, 9*16, self.blocks_batch))
 
     def on_draw(self):
         self.window.clear()
@@ -70,9 +72,17 @@ class Game:
             self.parse_data(list_of_data[i])
             i += 1
 
-        self.players[self.network.id].check_collisions(self.blocks)
-        self.players[self.network.id].update_movement(dt)
-        
+        self.update_moving_objects(dt)
+
+    def update_moving_objects(self, dt):
+        bs = []
+        for b in self.blocks:
+            if b.distance(self.players[self.network.id]) < 150:
+                bs.append(b)
+        self.players[self.network.id].update(dt, bs)
+
+        for p in self.projectiles:
+            p.update(dt, self.blocks)
 
     def parse_data(self, data):
         """"""

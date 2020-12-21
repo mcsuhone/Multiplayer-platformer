@@ -8,7 +8,7 @@ class Vector:
         self.y = y
 
     def length(self):
-        return math.sqrt(math.pow(self.x,2)+math.pow(self.x,2))
+        return math.sqrt(abs(self.x*self.x)+abs(self.y*self.y))
 
     def __add__(self, other):
         return Vector(self.x + other.x, self.y + other.y)
@@ -17,20 +17,17 @@ class Vector:
         return Vector(self.x - other.x, self.y - other.y)
 
     def scale(self, amount):
-        self.x *= amount
-        self.y *= amount
-
+        return Vector(self.x * amount, self.y * amount)
 
     def make_unit(self):
         length = self.length()
-        self.x = self.x / length
-        self.y = self.y / length
+        if length == 0:
+            return Vector(0, 0)
+        return Vector(self.x / length, self.y / length)
 
-    def x_dir(self):
-        if self.x >= 0:
-            return 1
-        else:
-            return -1
-    
+    def angle_x_axis(self):
+        """Returns angle to x-axis from -180 to 180 in degrees"""
+        return math.atan2(self.y, self.x) * 180 / math.pi
+
     def __str__(self):
         return "[" + str(self.x) + ", " + str(self.y) + "]"

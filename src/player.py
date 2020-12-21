@@ -1,7 +1,7 @@
 import pyglet
 from pyglet.window import key
 from vector import Vector
-from objects.projectiles.projectile import Projectile
+from objects.projectiles.projectile import *
 from objects.object import Object
 
 class Player(Object):
@@ -13,9 +13,8 @@ class Player(Object):
         self.texture_id = character_id
         self.projectiles = []
         
-
-        self.speed = 0.5
-        self.jump_height = 5
+        self.speed = 1
+        self.jump_height = 3
 
     def on_key_press(self, symbol, modifiers):
         if symbol == key.W:
@@ -38,24 +37,27 @@ class Player(Object):
             self.keys['right'] = False
 
     def center_coordinates(self):
-        return self.x + 15, self.y + 15
+        return self.x + self.hitbox.half_width, self.y + self.hitbox.half_height
 
     def on_mouse_press(self, x, y, button, modifiers):
-        direction = Vector(x - self.x, y - self.y)
+        direction = Vector(x - self.x, y - self.y).make_unit()
         if button == pyglet.window.mouse.LEFT:
             x, y = self.center_coordinates()
             self.projectiles.append(Projectile(x, y, direction, owner_id = self.owner))
 
-    def input(self, dt):
+    def update(self, dt, obstacles):
         dx = 0
         dy = 0
-        if self.keys['up']:
-            if not self.physics.in_air:
+        
+        if self.physics.in_air:
+            self.physics.fall()
+        else:
+            if self.keys['up'] and self.can_move['up']:
                 self.physics.in_air = True
                 dy = self.jump_height
-        if self.keys['left']:
+        if self.keys['left'] and self.can_move['left']:
             dx += -self.speed
-        if self.keys['right']:
+        if self.keys['right'] and self.can_move['right']:
             dx += self.speed
 
         if dx != 0:
@@ -65,5 +67,8 @@ class Player(Object):
 
         if dy != 0:
             self.physics.accelerate(Vector(0, dy))
+
+        self.move(dt, obstacles)
+        
 
 

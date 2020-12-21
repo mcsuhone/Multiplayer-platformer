@@ -2,6 +2,7 @@ import sys
 
 import socket
 from _thread import *
+import constants
 
 class Server:
     def __init__(self, ip, port):
@@ -96,7 +97,7 @@ def threaded_client(conn):
     print("Connection Closed")
     conn.close()
 
-server = Server("172.20.10.6", 5555)
+server = Server(constants.Constants.ip, 5555)
 
 server.socket.listen(4)
 print("Waiting for a connections")
