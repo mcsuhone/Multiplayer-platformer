@@ -3,7 +3,7 @@
 
 
 class Constants:
-    ip = "192.168.0.104"
+    ip = "192.168.0.100"
 
     auto_jump_limit = 15
     gravity = 1

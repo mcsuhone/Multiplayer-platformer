@@ -52,12 +52,12 @@ class Player(Object):
         if self.physics.in_air:
             self.physics.fall()
         else:
-            if self.keys['up'] and self.can_move['up']:
+            if self.keys['up']:
                 self.physics.in_air = True
                 dy = self.jump_height
-        if self.keys['left'] and self.can_move['left']:
+        if self.keys['left']:
             dx += -self.speed
-        if self.keys['right'] and self.can_move['right']:
+        if self.keys['right']:
             dx += self.speed
 
         if dx != 0:

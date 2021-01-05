@@ -29,5 +29,8 @@ class Vector:
         """Returns angle to x-axis from -180 to 180 in degrees"""
         return math.atan2(self.y, self.x) * 180 / math.pi
 
+    def distance(self, other):
+        return Vector(abs(other.x - self.x), abs(other.y - self.y)).length()
+
     def __str__(self):
         return "[" + str(self.x) + ", " + str(self.y) + "]"

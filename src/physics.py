@@ -30,5 +30,5 @@ class Physics():
 
     def decelerate(self, amount = Constants.friction):
         self.velocity.x *= amount
-        if self.velocity.length() < 2:
+        if self.velocity.length() < 1:
             self.velocity.x = 0

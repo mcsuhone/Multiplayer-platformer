@@ -7,13 +7,13 @@ from src.vector import Vector
 from src.physics import Physics
 
 #Player sprites
-texture = pyglet.image.load("./textures/derbiili.png") #27 x 22 pixels
+texture = pyglet.image.load("./textures/derbiili.png") # 27x22 pixels
 texture1 = pyglet.image.load("./textures/bug.png")
-texture2 = pyglet.image.load("./textures/snake.png")
+texture2 = pyglet.image.load("./textures/snake.png") # 24x24 pixels
 #Blocks
-texture10 = pyglet.image.load("./textures/stone.png")
-texture11 = pyglet.image.load("./textures/grass.png")
-texture12 = pyglet.image.load("./textures/dirt.png")
+texture10 = pyglet.image.load("./textures/stone.png") # 16x16
+texture11 = pyglet.image.load("./textures/grass.png") # 16x16
+texture12 = pyglet.image.load("./textures/dirt.png") # 16x16
 #Projectiles
 texture20 = pyglet.image.load("./textures/bullet.png")
 #Add them to dictionary
@@ -50,21 +50,30 @@ class Object(pyglet.sprite.Sprite):
         self.hitbox.move_to(x, y)
 
     def check_collisions(self, dt, objects):
+        print(self.pos(), " vel: ", self.physics.velocity)
         velocity = self.physics.velocity.scale(100 * dt)
 
-        future_hitbox = Hitbox(self.x + velocity.x, self.y + velocity.y, self.hitbox.half_width, self.hitbox.half_height)
+        future_hitbox = Hitbox(self.x + velocity.x, self.y + velocity.y, self.width, self.height)
 
         self.can_move = {'left':True, 'right':True, 'up':True, 'down':True}
         self.physics.in_air = True
 
-        hb_under = Hitbox(self.x, self.y-1, self.hitbox.half_width, self.hitbox.half_height)
-        hb_top = Hitbox(self.x, self.y+1, self.hitbox.half_width, self.hitbox.half_height)
-        hb_left = Hitbox(self.x-1, self.y, self.hitbox.half_width, self.hitbox.half_height)
-        hb_right = Hitbox(self.x+1, self.y, self.hitbox.half_width, self.hitbox.half_height)
+        hb_under = Hitbox(self.x, self.y-1, self.width, self.height)
+        hb_top = Hitbox(self.x, self.y+1, self.width, self.height)
+        hb_left = Hitbox(self.x-1, self.y, self.width, self.height)
+        hb_right = Hitbox(self.x+1, self.y, self.width, self.height)
 
         
         for obj in objects:
             future_hitbox.collision(obj.hitbox, velocity)
+            
+            if future_hitbox.collision_directions['x'] != None:
+                self.x = future_hitbox.collision_directions['x']
+                self.physics.velocity.x = 0
+
+            if future_hitbox.collision_directions['y'] != None:
+                self.y = future_hitbox.collision_directions['y']
+                self.physics.velocity.y = 0
 
             result = hb_under.intersects(obj.hitbox)
             if result:
@@ -80,21 +89,18 @@ class Object(pyglet.sprite.Sprite):
             if result:
                 self.can_move['up'] = False
 
-        print(future_hitbox.collision_directions)
+        #print(future_hitbox.collision_directions)
 
-        if future_hitbox.collision_directions['x'] != None:
-            self.x = future_hitbox.collision_directions['x']
-            self.physics.velocity.x = 0
+        
 
-        if future_hitbox.collision_directions['y'] != None:
-            self.y = future_hitbox.collision_directions['y']
-            self.physics.velocity.y = 0
+        #print(self.can_move)
+        #print("-----------------------------------------------------")
 
-        print(self.can_move)
-        print("-----------------------------------------------------")
+    def pos(self):
+        return Vector(self.x, self.y)
 
     def distance(self, other):
-        return Vector(self.x - other.x, self.y - other.y).length()
+        return self.pos().distance(other.pos())
 
         
 

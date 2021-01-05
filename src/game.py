@@ -25,7 +25,7 @@ class Game:
         self.load_map()
 
         texture_id = 2
-        new_player = Player(texture_id, 212, 170, self.network.id, self.players_batch)
+        new_player = Player(texture_id, 212, 108, self.network.id, self.players_batch)
         self.players[self.network.id] = new_player
 
         self.fps_display = pyglet.window.FPSDisplay(window = self.window)
@@ -43,13 +43,14 @@ class Game:
 
     def load_map(self):
         for x in range(100):
-            for y in range(6):
+            for y in range(0,6):
                 self.add_block(Block(12, x*16, y*16, self.blocks_batch))
         self.add_block(Block(12, 13*16, 9*16, self.blocks_batch))
         self.add_block(Block(12, 7*16, 6*16, self.blocks_batch))
         self.add_block(Block(12, 7*16, 7*16, self.blocks_batch))
         self.add_block(Block(12, 7*16, 8*16, self.blocks_batch))
         self.add_block(Block(12, 7*16, 9*16, self.blocks_batch))
+        self.add_block(Block(11, 260, 96, self.blocks_batch))
 
     def on_draw(self):
         self.window.clear()
